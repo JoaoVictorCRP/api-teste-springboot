@@ -1,10 +1,7 @@
 package com.example.apimemoriapoo.controller;
 
 import com.example.apimemoriapoo.model.Produto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,25 +27,53 @@ public class ProdutoController {
             2599.9
             )
         );
-        produtos.put(2L, new Produto(
+        produtos.put(3L, new Produto(
             3L,
             "Playstation 5",
             "Jogos impressionantes: Maravilhe-se com os gráficos incríveis e experimente os recursos do novo PS5.",
             2999.9
             )
         );
+        produtos.put(4L, new Produto(
+            4L,
+            "Steam Deck",
+            "Com seu console Steam Deck você terá entretenimento garantido todos os dias. Sua tecnologia foi criada para colocar novos desafios para jogadores novatos e especialistas. Adaptado às suas necessidades Salve as suas aplicações, fotos, vídeos e muito mais no disco rígido, que tem uma capacidade de 512 GB.",
+            4999.9
+            )
+        );
+        produtos.put(5L, new Produto(
+            5L,
+            "Teclado Gamer Redragon",
+            "Seu design arrojado e cores vibrantes adicionam estilo à configuração. A resposta tátil e a iluminação ajustável são perfeitas para jogos intensos.",
+            2999.9
+            )
+        );
     }
 
     @GetMapping
-    public Produto fetchRandom(){
-        Random rand = new Random();
-
-        Long n = rand.nextLong(1,3);
-        return produtos.get(n);
+    public Map<Long, Produto> fetch(){
+        return produtos;
     }
 
     @GetMapping("/{id}")
     public Produto findById(@PathVariable Long id) {
         return produtos.get(id);
+    }
+
+    @PostMapping
+    public Produto addProduto(@RequestBody Produto produto) {
+        produtos.put(produto.getId(), produto);
+        return produto;
+    }
+
+    @DeleteMapping("/{id}")
+    public Produto deleteProduto(@PathVariable Long id) {
+        return produtos.remove(id);
+    }
+
+    @PatchMapping("/{id}")
+    public Produto updateProduto(@RequestBody Produto produto, @PathVariable Long id) {
+        produto.setId(id);
+        return produtos.put(id, produto);
     }
 }
