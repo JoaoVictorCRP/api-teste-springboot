@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/produto") // Quem responde em /produto é o ProdutoController
@@ -54,8 +53,12 @@ public class ProdutoController {
     public Map<Long, Produto> fetch(){
         return produtos;
     }
-
-    @GetMapping("/{id}")
+    @GetMapping("/")
+    public Produto findByIdRequestParam(@RequestParam Long id) { // Request Param permite que possamor fazer uma query por chave e valor,
+        return produtos.get(id);                                // ao invés de só pelo valor, como é o caso do path variable.
+    }                                                           // EXEMPLO:
+                                                                // * Path Variable: localhost:8080/produto/1
+@GetMapping("/{id}")                                         // * Request Param: localhost:8080/produto/?id=1
     public Produto findById(@PathVariable Long id) {
         return produtos.get(id);
     }
